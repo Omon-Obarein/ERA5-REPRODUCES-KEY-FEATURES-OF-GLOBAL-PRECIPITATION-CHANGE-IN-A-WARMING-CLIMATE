@@ -1,1 +1,125 @@
+ALL VARIABLES ARE IN ANNUAL TIME STEPS
 
+%%% 1. TOTAL ANNUAL PRECIPITATION %%%%%%%% 
+tp_annual = grpstats(tp,timedata(:,1),'sum');
+
+%%% 2. TOTAL (ANNUAL) WINTER (DJF) PRECIPITATION %%%%%
+winter_time = (timedata(:, 2) == 12) | (timedata(:, 2) == 1) | (timedata(:, 2) == 2);
+winter_tp = tp(winter_time == 1, :); % get daily DJF precipitation
+n = size(winter_tp, 2);
+wint_tp1 = reshape(winter_tp, 92, [], n); % Reshape the precipitation matrix into a 92-day by n matrix for each year
+wint_tp2 = sum(wint_tp1, 1); % Sum up the precipitation for every 92-day period
+wint_tp3 = squeeze(wint_tp2); 
+
+%%% 3. TOTAL (ANNUAL) SPRING (MAM) PRECIPITATION %%%%%
+spr_time = (timedata(:, 2) == 3) | (timedata(:, 2) == 4) | (timedata(:, 2) == 5);
+spr_tp = tp(spr_time == 1, :); % get daily MAM precipitation
+n = size(spr_tp, 2);
+spr_tp1 = reshape(spr_tp, 92, [], n); % Reshape the precipitation matrix into a 92-day by n matrix for each year
+spr_tp2 = sum(spr_tp1, 1); % Sum up the precipitation for every 92-day period
+spr_tp3 = squeeze(spr_tp2); 
+
+%%% 4. TOTAL (ANNUAL) SUMMER (JJA) PRECIPITATION %%%%%
+summ_time = (timedata(:, 2) == 12) | (timedata(:, 2) == 1) | (timedata(:, 2) == 2);
+summ_tp = tp(summ_time == 1, :); % get daily JJA precipitation
+n = size(summ_tp, 2);
+summ_tp1 = reshape(summ_tp, 92, [], n); % Reshape the precipitation matrix into a 92-day by n matrix for eacch year
+summ_tp2 = sum(summ_tp1, 1); % Sum up the precipitation for every 92-day period
+summ_tp3 = squeeze(summ_tp2); 
+
+%%% 5. TOTAL (ANNUAL) FALL (SON) PRECIPITATION %%%%%
+fall_time = (timedata(:, 2) == 12) | (timedata(:, 2) == 1) | (timedata(:, 2) == 2);
+fall_tp = tp(fall_time == 1, :); % get daily SON precipitation
+n = size(fall_tp, 2);
+fall_tp1 = reshape(fall_tp, 92, [], n); % Reshape the precipitation matrix into a 92-day by n matrix for eacch year
+fall_tp2 = sum(fall_tp1, 1); % Sum up the precipitation for every 92-day period
+fall_tp3 = squeeze(fall_tp2); 
+
+%%%% 6. ANNUAL RAIN DAYS %%%%%
+% "ptype" is precipitation type variable; 1 is rain event and 5 is snow event
+ptype(tp < 1) = 0 % turns all precipitation types in dry days (< 1 mm) to zero
+rain_days = ptype == 1; % creates a binary matrix with rain days as 1
+
+%%%% 7. ANNUAL SNOW DAYS %%%%%
+snow_days = ptype == 5; % creates a binary matrix with snow days as 1
+
+%%%% 8. ANNUAL WET DAYS %%%%%
+tp(tp >= 1) = 1;
+wet_day = tp;
+
+%%%% 9. ANNUAL DRY DAYS %%%%%
+dry_day = wet_day ~= 1;
+
+%%%% 10. ANNUAL SUMMER WET DAYS %%%%%
+% to calculate monthly_wetdays
+% Create a new column in the timedata matrix that represents a unique month for each year
+ timedata(:, 7) = (timedata(:, 1) - min(timedata(:, 1))) * 12 + timedata(:, 2);
+% Get the unique months from the new column
+ unique_months = unique(timedata(:, 7));
+% sum the total wet days for each month and each column
+monthly_wetdays = zeros(length(unique_months), size(wet_day, 2)); % create an initial matrix
+for i = 1:length(unique_months)
+    monthly_wetdays(i, :) = sum(wet_day(timedata(:, 7) == unique_months(i), :), 1);
+end
+
+% to calculate summer_monthly_wetdays
+t_month = datetime(1979,1,1):calmonths(1):datetime(2022,12,31); % To create monthly timedata
+t_era = datevec(t_month);
+summer_months = (t_era(:, 2) == 6) | (t_era(:, 2) == 7) | (t_era(:, 2) == 8);
+summer_monthly_wetdays = monthly_wetdays(summer_months == 1,:);
+
+%%%% 11. ANNUAL SUMMER DRY DAYS %%%%%
+% to calculate monthly_drydays, sum the total dry days for each month and each column
+monthly_drydays = zeros(length(unique_months), size(dry_day, 2)); % create an initial matrix
+for i = 1:length(unique_months)
+    monthly_drydays(i, :) = sum(dry_day(timedata(:, 7) == unique_months(i), :), 1);
+end
+% to calculate summer_monthly_drydays
+summer_months = (t_era(:, 2) == 6) | (t_era(:, 2) == 7) | (t_era(:, 2) == 8);
+summer_monthly_drydays = monthly_drydays(summer_months == 1,:);
+
+%%%% 12. ANNUAL WINTER WET DAYS %%%%%
+% to calculate winter_monthly_wetdays 
+winter_months = (t_era(:, 2) == 12) | (t_era(:, 2) == 1) | (t_era(:, 2) == 2);
+winter_monthly_wetdays = monthly_wetdays(winter_months == 1,:);
+
+%%%% 13. ANNUAL WINTER DRY DAYS %%%%%
+winter_monthly_drydays = monthly_drydays(winter_months == 1,:);
+
+%%%% 14. ANNUAL WET SPELL %%%%%
+unique_years = unique(timedata(:, 1));
+a = find(years == unique_years(1)); % to get the wet days for the first year
+ pre79 = wet_days(a, :); % to get the wet days for the first year
+pseq_79 = zeros(1, 1038240); create initial matrix
+for i = 1:1038240
+%     pseq_79(i) = seq(pre79(:, i));
+% end
+% REPEAT FOR ALL REMAINING YEARS
+
+%%%% 15. ANNUAL MAXIMA PRECIPITATION %%%%%
+unique_years = unique(timedata(:, 1));
+a = find(years == unique_years(1)); % to get the precipitation for the first year
+ pre79 = precip(a, :); % to get the precipitation for the first year
+for i=1:size(pre79,2)
+an_max79(i) = max(pre79(:,i));
+end
+% REPEAT FOR ALL REMAINING YEARS
+
+%%%% 16. ANNUAL 95TH PERCENTILE PRECIPITATION %%%%% 
+tp(tp == 0) = NaN; % 95th percentile is for just wet days, so dry days are excluded from the calculation
+% to calculate the 95th percentile across all days
+for i = 1:size(tp, 2) 
+p95(:,i) = prctile(tp(:,i),95); 
+end 
+% p95 is comp
+
+%%%% 17. ANNUAL COUNT OF PRECIPITATION >= 95TH PERCENTILE PRECIPITATION %%%%%
+% to get each annual count, individual years are compared the all days p95
+unique_years = unique(timedata(:, 1));
+a = find(years == unique_years(1)); % to get the precipitation for the first year
+ pre79 = precip(a, :); % to get the precipitation for the first year
+prc_79 = pre79 >= p95; % a binary matrix where all precipitation >=p95 is ones
+ct79 = sum(prc_79); % add up to get total count
+% REPEAT FOR ALL REMAINING YEARS
+
+%%%% 18. ANNUAL MEAN OF PRECIPITATION >= 95TH PERCENTILE PRECIPITATION %%%%%
