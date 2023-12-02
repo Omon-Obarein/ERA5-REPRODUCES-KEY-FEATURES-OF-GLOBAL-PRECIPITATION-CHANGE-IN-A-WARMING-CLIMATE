@@ -1,1 +1,34 @@
+%% To plot scalling of precip total, freq, spell, type, and extreme with temperature
+% first calculate anomalies and average them
+temp = mean(zscore(temp_ann),2);
+pre_tot = mean(zscore(precip_annual),2);
+p95 = nanmean(zscore(ann_p95),2);
+wspl = mean(zscore(ann_wetspell),2);
+wet = mean(zscore(annual_wetdays),2);
 
+years = (1979:2022)';  % Column vector of years
+vec1 = temp;
+vec2 = pre_tot;
+vec3 = wet;
+vec4 = wspl;
+vec5 = p95;
+
+trend1 = smooth(years, vec1, 0.3, 'loess');
+trend2 = smooth(years, vec2, 0.3, 'loess');
+trend3 = smooth(years, vec3, 0.3, 'loess');
+trend4 = smooth(years, vec4, 0.3, 'loess');
+trend5 = smooth(years, vec5, 0.3, 'loess');
+
+plot(years, trend1, 'r-', 'LineWidth', 1.5); % Blue line
+hold on;
+plot(years, trend2, 'b-', 'LineWidth', 1.5); % Red line
+plot(years, trend3, 'g-', 'LineWidth', 1.5); % Green line
+plot(years, trend4, 'k-', 'LineWidth', 1.5); % Black line
+plot(years, trend5, 'm-', 'LineWidth', 1.5); % Magenta line
+hold off;
+grid on
+xlabel('Year');
+ylabel('Z-scores');
+
+legend('Temperature', 'Total Precipitation', 'Wet days', 'Wet spell', 'Extreme Precipitation');
+set(gcf,'color','w');
