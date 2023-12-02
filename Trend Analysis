@@ -1,1 +1,80 @@
+% ALL ANNUAL VALUES ARE CONVERTED TO Z-SCORES BEFORE TREND ANALYSIS
+tp_ann = zscore(tp_annual); % this is for annual total precipitation; REPEAT FOR THE OTHER 
+% the Modified Mann Kendall is adjusted for serial correlation
+% preallocate arrays for storing the output
+H = zeros(1, size(tp_ann, 2)); 
+p_value = zeros(1, size(tp_ann, 2)); 
+% loop through each column of the data
+for i = 1:size(tp_ann, 2)  %change
+    % calculate the modified Mann-Kendall for the current column
+    [H(i), p_value(i)] = Mann_Kendall_Modified(tp_ann(:, i), 0.05); 
+end
+% Modify the p_value for Spatial autocorrelation using Wilks's False Discovery Rate (FDR)
+pvals = p_value;
+[pFDR, tp_ann_sigs] = FDR(pvals,0.05);
+"tp_ann_sigs" is a binary variable where ones indicate significant trends
 
+%% To get the magnitude of the trends, we use the Theil-sen slope
+ tt = 1:size(tp_ann, 2);  
+var = double(tp_ann(:, tt));  
+tp_trend = zeros(1, size(tp_ann, 2));  % Preallocate the output array 
+parfor x = 1:1038240
+    tp_trend(x) = TheilSen([transpose(1:44), var(:, x)]);
+end
+_________________________________________________________________________________________________________
+%% To separate the global trends into land and ocean trends
+trend = ann_mean95_trend; % use the relevant indices trend
+% kop = reshape(new_koppen, 1, []);
+land3 = reshape(land, 1, []); % turn land into a 1-D vector
+land_indices = find(land3 == 1); % get indices of land grids as 1-d vector
+ocean_indices = find(land3 == 0); % get indices of ocean grids as 1-d vector
+
+land_trend = NaN(1, size(trend, 2)); % make other non-land areas NaNs
+ocean_trend = NaN(1, size(trend, 2)); % ake other non-ocean areas NaNs
+
+land_trend(land_indices) = trend(land_indices); % get trends for land grids
+ocean_trend(ocean_indices) = trend(ocean_indices); % get trends for ocean grids
+_______________________________________________________________________________________________________
+%% To resample gridpoints so that they are equally spaced
+  [index,REcoords,D,qcoords]=eqsample(coords,100000,'globe'); % resample global grids to 10000
+land_trend = land_trend'; % to transpose them 
+ ocean_trend = ocean_trend';
+  trend = trend';
+
+land_REdata = land_trend(index,:);
+ ocean_REdata = ocean_trend(index,:);
+ global_REdata = trend(index, :);
+__________________________________________________________________________________________________
+%% SUMMARIZE TRENDS BY LATITUDES
+% Find the indices of latitudes between -90 and 90 degrees
+ lat_indices = find(abs(RE_lat) <= 90);
+ lat_sub = RE_lat(lat_indices); % Select the corresponding latitudes
+ [unique_lats,~,idx] = unique(lat_sub); % Get unique latitudes
+mean95_land_trend = accumarray(idx, land_REdata, [], @nanmean);
+mean95_ocean_trend = accumarray(idx, ocean_REdata, [], @nanmean);
+mean95_global_trend = accumarray(idx, global_REdata, [], @nanmean); % Calculate the mean trend for each unique latitude
+_______________________________________________________________________________________________________________________________
+%% To separate the trends by climate region 
+% reshape the six climate region matrices 
+tropical_clim = reshape(tropical_clim, 1, []);
+dry_clim = reshape(dry_clim, 1, []);
+polar_clim = reshape(polar_clim, 1, []);
+cold_temp_clim = reshape(cold_temp_clim, 1, []);
+mild_temp_clim = reshape(mild_temp_clim, 1, []);
+highland_clim = reshape(highland_clim, 1, []);
+
+% For tp_trend use the resampled index to allocate trends to all the climate regions. 
+trend = ann_mean95_trend;
+logicalIndex = false(size(trend));
+logicalIndex(index) = true;
+% Set rows not specified by index to NaN
+global_REdata2 = NaN(size(trend));
+global_REdata2(logicalIndex) = trend(logicalIndex);
+
+%% To get resampled trends for each grid point
+tp_tropical_trend = global_REdata2(:, tropical_clim);
+tp_dry_trend = global_REdata2(:, dry_clim);
+tp_polar_trend = global_REdata2(:, polar_clim);
+tp_cold_temp_trend = global_REdata2(:, cold_temp_clim);
+tp_mild_temp_trend = global_REdata2(:, mild_temp_clim);
+tp_highland_trend = global_REdata2(:, highland_clim);
