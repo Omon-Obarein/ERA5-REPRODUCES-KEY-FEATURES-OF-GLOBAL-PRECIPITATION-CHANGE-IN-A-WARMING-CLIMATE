@@ -1,0 +1,44 @@
+MATLAB CODES
+
+%%%% LOADING HOURLY ERA5 PRECIPITATION DATASET %%%%%
+ncfile = 'D:\hourly_era5_precipitation\era5_1979.nc'; % because of size, data is loaded yearly
+ncinfo(ncfile) % To get information about the nc file
+ncdisp(ncfile) % to display nc file
+myvar = single(ncread(ncfile, 'tp')); % precipitation variable is read into "myvar" in single precision
+
+%%%% LOADING GEOGRAPHIC COORDINATES AND TIME VARIABLES %%%%%%%
+ncid = netcdf.open('D:\hourly_era5_precipitation\era5_1979.nc');                                                                                                          
+longitude = netcdf.getVar(ncid,0);
+latitude = netcdf.getVar(ncid,1);
+time = netcdf.getVar(ncid,2);
+
+%%%%%% CREATING A TIMEDATA VARIABLE SPANNING ALL DAYS IN THE STUDY PERIOD %%%%%% 
+clear t1 t2 t3 timedata
+t1 = datetime(1979,01,01,00,00,00)
+t2 = datetime(2022,12,31,00,00,00);
+t3 = t1:t2;
+timedata = datevec(t3);
+
+%%%%% CREATING A MESHGRID OF LONGITUDE AND LATITUDE FOR MAPPING %%%%%%
+[lat lon] = meshgrid(latitude, longitude);
+
+%%%%% RESHAPING THE 3-D PRECIPITATION DATA TO 2-D, WITH HOURS AS ROWS%%%%%%
+precip_79a = permute(myvar(:,:,1:end),[3 2 1]);
+precip_79b = reshape(precip_79a,length(timedata2),[]);
+
+%%%% CONVERT PRECIPITATION IN METERS TO MILLIMETERS %%%%%
+precip_79c = precip_79b*1000;
+
+%%%%%  SUMMING ALL HOURLY PRECIPITATION TO DAILY PRECIPITATION %%%%%
+hours_per_day = 24;
+precip_79d = reshape(precip_79c, hours_per_day, []);
+ precip_79e = sum(precip_79d, 1); 
+
+%%%% DEFINING A WET DAY AS ONE WITH >= 1 mm OF PRECIPITATION %%%%%%
+precip_79e(precip_79e<=1) = 0;
+
+%%%%% COMBINING ALL 44 YEARS OF PRECIPITATION DATA 1979 TO 2022 %%%%%
+tp = vertcat(precip_1979e, precip_1980e, precip_1981e, precip_1982e, precip_1983e, precip_1984e, precip_1985e, precip_1986e, precip_1987e, precip_1988e, precip_1989e, precip_1990e, precip_1991e, 
+              precip_1992e, precip_1993e, precip_1994e, precip_1995e, precip_1996e, precip_1997e, precip_1998e, precip_1999e, precip_2000e, precip_2001e, precip_2002e, precip_2003e, precip_2004e, 
+              precip_2005e, precip_2006e, precip_2007, precip_2008e, precip_2009e, precip_2010e, precip_2011e, precip_2012e, precip_2013e, precip_2014e, precip_2015e, precip_2016e, precip_2017e, 
+              precip_2018e, precip_2019e, precip_2020e, precip_2021e, precip_2022e)
