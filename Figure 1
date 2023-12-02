@@ -1,1 +1,73 @@
+"trend" is an 18 x 1038240 matrix containing trends for all 18 precipitation parameters
+"sigb" is an 18 x 1038240 binary matrix containing statistically significance for all 18 precipitation parameters
 
+make_it_tight = true;
+% Define the parameters for subtightplot
+position = [0.1 0.2]; % Adjust the left and right margins
+margin = [0.1 0.1];   % Adjust the top and bottom margins
+gap = [0.2 0.2];      % Increase the vertical gap between figures
+
+subplot = @(m, n, p) subtightplot(m, n, p, position, margin, gap);
+
+if ~make_it_tight
+    clear subplot;
+end
+
+figure('Position', [0 0 794 1123]);
+set(gcf, 'PaperSize', [20.97 29.7]);
+
+subtightplot(6,3,1)
+Mapper(trend(:,1), lats, lons, 'sigmask', sigsb(:,1)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(a)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,2)
+Mapper(trend(:,2), lats, lons, 'sigmask', sigsb(:,2)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(b)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,3)
+Mapper(trend(:,3), lats, lons, 'sigmask', sigsb(:,3)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(c)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,4)
+Mapper(trend(:,4), lats, lons, 'sigmask', sigsb(:,4)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(d)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,5)
+Mapper(trend(:,5), lats, lons, 'sigmask', sigsb(:,5)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(e)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,6)
+Mapper(trend(:,6), lats, lons, 'sigmask', sigsb(:,6)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(f)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,7)
+Mapper(trend(:,7), lats, lons, 'sigmask', sigsb(:,7)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(g)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,8)
+Mapper(trend(:,8), lats, lons, 'sigmask', sigsb(:,8)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(h)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,9)
+Mapper(trend(:,9), lats, lons, 'sigmask', sigsb(:,9)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(i)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,10)
+Mapper(trend(:,10), lats, lons, 'sigmask', sigsb(:,10)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(j)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,11)
+Mapper(trend(:,11), lats, lons, 'sigmask', sigsb(:,11)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(k)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,12)
+Mapper(trend(:,12), lats, lons, 'sigmask', sigsb(:,12)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(l)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,13)
+Mapper(trend(:,13), lats, lons, 'sigmask', sigsb(:,13)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(m)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,14)
+Mapper(trend(:,14), lats, lons, 'sigmask', sigsb(:,14)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(n)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,15)
+Mapper(trend(:,15), lats, lons, 'sigmask', sigsb(:,15)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(o)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,16)
+Mapper(trend(:,16), lats, lons, 'sigmask', sigsb(:,16)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(p)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,17)
+Mapper(trend(:,17), lats, lons, 'sigmask', sigsb(:,17)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(q)', 'subplot',[-0.75 0.75],'colorbar1',0);
+
+subtightplot(6,3,18)
+Mapper(trend(:,18), lats, lons, 'sigmask', sigsb(:,18)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'title','(r)', 'subplot',[-0.75 0.75],'colorbar1',1);   
+% Add a horizontal colorbar
+colorbar('Location', 'southoutside', 'Ticks', [-0.75 -0.6 -0.45 -0.3 -0.15 0 0.15 0.3 0.45 0.6 0.75]);
