@@ -1,1 +1,22 @@
+# Load the necessary library
+library(ggplot2)
+
+# Read the data
+data <- read.csv("path_to_your_file/temp.csv")
+
+# Adding a year column (assuming rows are in chronological order from 1979 to 2022)
+data$year <- 1979:2022
+
+# Melting the data for easier plotting with ggplot2
+library(reshape2)
+data_melted <- melt(data, id.vars = 'year')
+
+# Creating the line plot
+ggplot(data_melted, aes(x = year, y = value, color = variable)) +
+  geom_line() +
+  labs(title = "Seasonal Average Temperatures (1979 - 2022)",
+       x = "Year",
+       y = "Temperature (°C)",
+       color = "Season") +
+  theme_minimal()
 
