@@ -1,1 +1,49 @@
+## LOADING DATA INTO R
+library(readr)
 
+ann_pre <- read_csv("ann_pre.csv", col_names = FALSE)
+snd <- read_csv("snd.csv", col_names = FALSE)
+wd <- read_csv("wd.csv", col_names = FALSE)
+wspl <- read_csv("wspl.csv", col_names = FALSE)
+
+library(ggplot2)
+library(tidyr)
+
+# Add column names to your data frame
+colnames(ann_pre) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(snd) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wd) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wspl) <- c("T", "D", "Ms", "Mc", "P", "H")
+
+# Create long form data for use with ggplot2
+data_long1 <- gather(ann_pre, key = "Variable", value = "Value") 
+data_long2 <- gather(snd, key = "Variable", value = "Value")
+data_long3 <- gather(wd, key = "Variable", value = "Value")
+data_long4 <- gather(wspl, key = "Variable", value = "Value")
+
+# Create the plots individually
+library(ggplot2)
+
+
+data <- data_long1
+p <- ggplot(data, aes(x = Variable, y = Value, fill = Variable)) +
+  geom_boxplot(outlier.size = 2) +  # Reduce size of outliers
+  labs(x = NULL, y = NULL) +  # Remove axis labels
+  scale_fill_discrete(name = NULL) +  # Remove legend title
+  theme_bw() +
+  theme(legend.position = "none",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), # Remove grid lines
+        axis.text.x = element_text(size = 21, face = "bold"),  # Increase x-axis font size
+        #axis.text.x = element_blank(),
+        #axis.text.y = element_blank()) +
+        axis.text.y = element_text(size = 16)) +  # Increase y-axis font size
+  scale_y_continuous(breaks = seq(-0.8, 0.8, by = 0.2),
+                     limits = c(-0.8, 0.8))
+print(p)
+
+# Export figure
+# Export the plot to a PNG image with 1000 DPI
+ggsave("wspl.png", plot = p, dpi = 1000) # here
+
+## REPEAT THIS FOR ALL PARAMETERS AND JOIN AS A SUBPLOT IN EXCEL
