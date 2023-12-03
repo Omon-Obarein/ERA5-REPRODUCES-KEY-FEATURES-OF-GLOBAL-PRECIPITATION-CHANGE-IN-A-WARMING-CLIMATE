@@ -1,1 +1,12 @@
+%%%%% 7a. %%%%%%%%
 
+"trend(:,7)": the seventh row of the trends matrix is the trends in snow days
+"sigsb(:,7)": the seventh row of the binary sigsb matrix indicating statistical significance in snow day trends
+
+Mapper(trend(:,7), lats, lons, 'sigmask', sigsb(:,7)','mask', 'none', 'colors', 'greenbrown(9)', 'centerT', 'zero', 'contINT', 0.2);
+colorbar('Location', 'southoutside', 'Ticks', [-0.6 -0.45 -0.3 -0.15 0 0.15 0.3 0.45 0.6]);
+
+%%%%% 7b. %%%%%%%%%%%
+"s_r_change" is a matrix that indicates grid points where the median precipitation type (between rain and snow) has changed from the first half to the second half of the study period
+mapperSCAT(s_r_change, lats, lons, 'ptsize', 6, 'colors',flipud(winter(2)));
+c = colorbar('southoutside','FontSize', 12, 'Ticks', [1, 2], 'TickLabels', {'Snow to Rain','Rain to Snow'});
