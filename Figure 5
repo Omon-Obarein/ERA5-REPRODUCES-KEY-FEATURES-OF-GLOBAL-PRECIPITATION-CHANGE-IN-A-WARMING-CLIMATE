@@ -1,1 +1,12 @@
+"trends_arctic" is a 5 x 1038240 matrix containing trends for all the five parameters in this figure
+"sigs_artic" is a 5 x 1038240 binary matrix indicating statistical significance
+
+Mapper(trends_arctic(:,5), lats, lons, 'sigmask', sigs_arctic(:,5)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'projection', 'arctic');
+Mapper(trends_arctic(:,5), lats, lons, 'sigmask', sigs_arctic(:,5)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'projection', 'arctic');
+Mapper(trends_arctic(:,5), lats, lons, 'sigmask', sigs_arctic(:,5)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'projection', 'arctic');
+Mapper(trends_arctic(:,5), lats, lons, 'sigmask', sigs_arctic(:,5)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'projection', 'arctic');
+Mapper(trends_arctic(:,5), lats, lons, 'sigmask', sigs_arctic(:,5)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2, 'projection', 'arctic');
+colorbar('Location', 'southoutside', 'Ticks', [-0.75 -0.6 -0.45 -0.3 -0.15 0 0.15 0.3 0.45 0.6 0.75]);
+
+% THE FIVE MAPS ARE MADE INDIVIDUALLY AND COMBINED IN EXCEL
 
