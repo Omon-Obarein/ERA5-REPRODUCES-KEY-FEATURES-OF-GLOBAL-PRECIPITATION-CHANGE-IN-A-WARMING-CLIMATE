@@ -1,1 +1,125 @@
+###
+## LOADING DATA INTO R
+library(readr)
+m95 <- read_csv("m95.csv", col_names = FALSE)
+c95 <- read_csv("c95.csv", col_names = FALSE)
+p95 <- read_csv("p95.csv", col_names = FALSE)
+ann_pre <- read_csv("ann_pre.csv", col_names = FALSE)
+summ <- read_csv("summ.csv", col_names = FALSE)
+wint <- read_csv("wint.csv", col_names = FALSE)
+spr <- read_csv("spr.csv", col_names = FALSE)
+fl <- read_csv("fl.csv", col_names = FALSE)
+rd <- read_csv("rd.csv", col_names = FALSE)
+snd <- read_csv("snd.csv", col_names = FALSE)
+wd <- read_csv("wd.csv", col_names = FALSE)
+drdy <- read_csv("drdy.csv", col_names = FALSE)
+swet <- read_csv("swet.csv", col_names = FALSE)
+sdry <- read_csv("sdry.csv", col_names = FALSE)
+wwet <- read_csv("wwet.csv", col_names = FALSE)
+wdry <- read_csv("wdry.csv", col_names = FALSE)
+wspl <- read_csv("wspl.csv", col_names = FALSE)
+am <- read_csv("am.csv", col_names = FALSE)
+
+#install.packages("tidyr")
+#install.packages("ggplot2")
+library(ggplot2)
+library(tidyr)
+
+
+# Add column names to your data frame
+colnames(m95) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(c95) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(p95) <-c("T", "D", "Ms", "Mc", "P", "H")
+colnames(am) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(ann_pre) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(summ) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wint) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(spr) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(fl) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(rd) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(snd) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wd) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(drdy) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(swet) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(sdry) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wwet) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wdry) <- c("T", "D", "Ms", "Mc", "P", "H")
+colnames(wspl) <- c("T", "D", "Ms", "Mc", "P", "H")
+
+# Create long form data for use with ggplot2
+data_long1 <- gather(ann_pre, key = "Variable", value = "Value") 
+data_long2 <- gather(summ, key = "Variable", value = "Value")  
+data_long3 <- gather(wint, key = "Variable", value = "Value") 
+data_long4 <- gather(spr, key = "Variable", value = "Value")
+data_long5 <- gather(fl, key = "Variable", value = "Value")
+data_long6 <- gather(rd, key = "Variable", value = "Value")
+data_long7 <- gather(snd, key = "Variable", value = "Value")
+data_long8 <- gather(wd, key = "Variable", value = "Value")
+data_long9 <- gather(drdy, key = "Variable", value = "Value")
+data_long10 <- gather(swet, key = "Variable", value = "Value")
+data_long11 <- gather(sdry, key = "Variable", value = "Value")
+data_long12 <- gather(wwet, key = "Variable", value = "Value")
+data_long13 <- gather(wdry, key = "Variable", value = "Value")
+data_long14 <- gather(wspl, key = "Variable", value = "Value")
+data_long15 <- gather(am, key = "Variable", value = "Value")
+data_long16 <- gather(p95, key = "Variable", value = "Value")
+data_long17 <- gather(c95, key = "Variable", value = "Value")
+data_long18 <- gather(m95, key = "Variable", value = "Value")
+
+##
+install.packages("gridExtra")
+
+
+
+###
+library(ggplot2)
+library(gridExtra)
+
+# Create a list of data frames (data_long1 to data_long18)
+data_list <- list(data_long1, data_long2, data_long3, data_long4, data_long5,
+                  data_long6, data_long7, data_long8, data_long9, data_long10,
+                  data_long11, data_long12, data_long13, data_long14, data_long15,
+                  data_long16, data_long17, data_long18)
+
+# Create a list of ggplot2 plots with common settings
+plot_list <- lapply(seq_along(data_list), function(idx) {
+  data <- data_list[[idx]]
+  
+  p <- ggplot(data, aes(x = Variable, y = Value, fill = Variable)) +
+    geom_boxplot(outlier.size = 1) +  # Reduce size of outliers
+    labs(x = NULL, y = NULL) +  # Remove axis labels
+    scale_fill_discrete(name = NULL) +  # Remove legend title
+    theme_bw() +
+    theme(legend.position = "none",
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()) # Remove grid lines
+  
+  # Condition for y-axis labels
+  if (idx %in% c(1,4,7,10,13,16)) {
+    p <- p + scale_y_continuous(breaks = seq(-0.8, 0.8, by = 0.2),
+                                labels = seq(-0.8, 0.8, by = 0.2),
+                                limits = c(-0.8, 0.8))
+  } else {
+    p <- p + scale_y_continuous(breaks = seq(-0.8, 0.8, by = 0.2),
+                                labels = NULL,
+                                limits = c(-0.8, 0.8))
+  }
+  
+  # Condition to remove x-tick labels except for the mentioned subplots
+  if(!idx %in% c(7,8,9,16,17,18)){
+    p <- p + theme(axis.text.x = element_blank())
+  }
+  
+  return(p)
+})
+
+
+
+
+# Arrange the plots in a grob instead of printing
+subplot_grob <- arrangeGrob(grobs = plot_list, ncol = 3)
+
+# Save the grob to a PNG in A4 size (8.27 x 11.69 inches)
+ggsave("regbox3.png", plot = subplot_grob, width = 8.27, height = 11.69, dpi = 1000)
+
 
