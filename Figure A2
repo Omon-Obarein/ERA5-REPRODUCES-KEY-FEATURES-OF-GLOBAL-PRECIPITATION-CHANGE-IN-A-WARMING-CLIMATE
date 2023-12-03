@@ -2,7 +2,7 @@
 library(ggplot2)
 
 # Read the data
-data <- read.csv("path_to_your_file/temp.csv")
+data <- read.csv("C:\DISSERTATION\R code scripts/temp.csv")
 
 # Adding a year column (assuming rows are in chronological order from 1979 to 2022)
 data$year <- 1979:2022
