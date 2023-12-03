@@ -1,1 +1,170 @@
 
+%%%% LEFT PANE %%%%%%%
+Mapper(trend(:,1), lats, lons, 'sigmask', sigsb(:,1)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2);
+Mapper(trend(:,2), lats, lons, 'sigmask', sigsb(:,2)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2);
+Mapper(trend(:,3), lats, lons, 'sigmask', sigsb(:,3)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2);
+Mapper(trend(:,8), lats, lons, 'sigmask', sigsb(:,8)','mask', 'none', 'colors', 'greenbrown(11)', 'centerT', 'zero', 'contINT', 0.2);
+
+
+
+%%%% RIGHT PANE %%%%%%
+% ANNUAL PRECIP TOTAL
+  subtightplot(6,3,1)
+ x = unique_lats;
+x1 = flipud(x);
+globa1 = flipud(globa_pre);
+ocean1 = flipud(ocean_pre); 
+land1 = flipud(land_pre);
+plot(movmean(globa1, 6), x1,'linewidth',0.5,'color','k')
+hold on
+plot(movmean(ocean1, 6), x1,'linewidth',0.5,'color','b')
+hold on
+  land1(isnan(land1))=0; % remove the NaNs from land_trend
+plot(movmean(land1, 6), x1,'linewidth',0.5,'color',[0.8, 0.6, 0.4])  
+% Create a vector for x-axis
+% x = 1:length(land);
+hold on;
+% plot(x, data, '-k');                  % Plot all data points
+%  land1(isnan(land1))=0; % remove the NaNs from land_trend
+plot(movmean(land1(1:28),6), x1(1:28), '--r','linewidth',0.5);      % Plot NaN values as dotted lines
+plot(movmean(land1(583:618),6), x1(583:618), '--r');
+plot(movmean(land1(696),6), x1(696), '--r','linewidth',0.5);
+plot(movmean(land1(701:721),6), x1(701:721), '--r','linewidth',0.5);
+hold off;
+grid on
+
+xlim([-0.3 0.4])
+ylim([-90 90])
+
+ylabel('Latitude','FontSize',12)
+% xlabel('Decadal Trend','FontSize',12)
+% xticklabels('auto')
+ yticks([-90 -60 -30 0 30 60 90])
+ xticks([-0.3 -0.2 -0.1 0 0.1 0.2 0.3 0.4])
+   xticklabels([])
+a = get(gca, 'xticklabels');
+%  set(gca, 'xticklabels', a, 'FontSize',9)
+set(gcf,'color','w');
+legend('Global','Ocean','Land')
+
+
+% ANNUAL SUMMER PRECIP
+  subtightplot(6,3,2)
+ x = unique_lats;
+x1 = flipud(x);
+globa2 = flipud(globa_summ);
+ocean2 = flipud(ocean_summ); 
+land2 = flipud(land_summ);
+plot(movmean(globa2, 6), x1,'linewidth',0.5,'color','k')
+hold on
+plot(movmean(ocean2, 6), x1,'linewidth',0.5,'color','b')
+hold on
+  land2(isnan(land2))=0; % remove the NaNs from land_trend
+plot(movmean(land2, 6), x1,'linewidth',0.5,'color',[0.8, 0.6, 0.4])  
+% Create a vector for x-axis
+% x = 1:length(land);
+hold on;
+% plot(x, data, '-k');                  % Plot all data points
+%  land1(isnan(land1))=0; % remove the NaNs from land_trend
+plot(movmean(land2(1:28),6), x1(1:28), '--r','linewidth',0.5);      % Plot NaN values as dotted lines
+plot(movmean(land2(583:618),6), x1(583:618), '--r');
+plot(movmean(land2(696),6), x1(696), '--r','linewidth',0.5);
+plot(movmean(land2(701:721),6), x1(701:721), '--r','linewidth',0.5);
+hold off;
+grid on
+
+xlim([-0.3 0.4])
+ylim([-90 90])
+  xticklabels([])
+%  ylabel('Latitude','FontSize',14)
+%  xlabel('Decadal Trend','FontSize',14)
+% xticklabels('auto')
+ yticks([-90 -60 -30 0 30 60 90])
+ xticks([-0.3 -0.2 -0.1 0 0.1 0.2 0.3 0.4])
+  yticklabels([])
+a = get(gca, 'xticklabels');
+% set(gca, 'xticklabels', a, 'FontSize',12)
+set(gcf,'color','w');
+legend('Global','Ocean','Land')
+
+
+
+% ANNUAL WINTER PRECIP
+ subtightplot(6,3,3)
+ x = unique_lats;
+x1 = flipud(x);
+globa3 = flipud(globa_wint);
+ocean3 = flipud(ocean_wint); 
+land3 = flipud(land_wint);
+plot(movmean(globa3, 6), x1,'linewidth',0.5,'color','k')
+hold on
+plot(movmean(ocean3, 6), x1,'linewidth',0.5,'color','b')
+hold on
+  land3(isnan(land3))=0; % remove the NaNs from land_trend
+plot(movmean(land3, 6), x1,'linewidth',0.5,'color',[0.8, 0.6, 0.4])  
+% Create a vector for x-axis
+% x = 1:length(land);
+hold on;
+% plot(x, data, '-k');                  % Plot all data points
+%  land1(isnan(land1))=0; % remove the NaNs from land_trend
+plot(movmean(land3(1:28),6), x1(1:28), '--r','linewidth',0.5);      % Plot NaN values as dotted lines
+plot(movmean(land3(583:618),6), x1(583:618), '--r');
+plot(movmean(land3(696),6), x1(696), '--r','linewidth',0.5);
+plot(movmean(land3(701:721),6), x1(701:721), '--r','linewidth',0.5);
+hold off;
+grid on
+
+xlim([-0.3 0.4])
+ylim([-90 90])
+  xticklabels([])
+% ylabel('Latitude','FontSize',12)
+% xlabel('Decadal Trend','FontSize',12)
+% xticklabels('auto')
+ yticks([-90 -60 -30 0 30 60 90])
+ xticks([-0.3 -0.2 -0.1 0 0.1 0.2 0.3 0.4])
+   yticklabels([])
+% a = get(gca, 'xticklabels');
+% set(gca, 'xticklabels', a, 'FontSize',12)
+set(gcf,'color','w');
+legend('Global','Ocean','Land')
+
+
+%% ANNUAL WET DAYS
+x = unique_lats;
+x1 = flipud(x);
+globa8 = flipud(globa_wd);
+ocean8 = flipud(ocean_wd); 
+land8 = flipud(land_wd);
+plot(movmean(globa1, 6), x1,'linewidth',1.5,'color','k')
+hold on
+plot(movmean(ocean1, 6), x1,'linewidth',1.5,'color','b')
+hold on
+  land8(isnan(land8))=0; % remove the NaNs from land_trend
+plot(movmean(land8, 6), x1,'linewidth',1.5,'color',[0.8, 0.6, 0.4])  
+% Create a vector for x-axis
+% x = 1:length(land);
+hold on;
+% plot(x, data, '-k');                  % Plot all data points
+%  land1(isnan(land1))=0; % remove the NaNs from land_trend
+plot(movmean(land8(1:28),6), x1(1:28), '--r','linewidth',1);      % Plot NaN values as dotted lines
+plot(movmean(land8(583:618),6), x1(583:618), '--r');
+plot(movmean(land8(696),6), x1(696), '--r','linewidth',1);
+plot(movmean(land8(701:721),6), x1(701:721), '--r','linewidth',1);
+hold off;
+grid on
+
+xlim([-0.4 0.3])
+ylim([-90 90])
+%   xticklabels([])
+ ylabel('Latitude','FontSize',14)
+ xlabel('Decadal Trend','FontSize',14)
+% xticklabels('auto')
+ yticks([-90 -60 -30 0 30 60 90])
+ xticks([-0.4 -0.3 -0.2 -0.1 0 0.1 0.2 0.3])
+%    yticklabels([])
+a = get(gca, 'xticklabels');
+% set(gca, 'xticklabels', a, 'FontSize',12)
+set(gcf,'color','w');
+legend('Global','Ocean','Land')
+
+% THESE MAPS AND CHARTS WERE CREATED SEPARATELY AND JOINED IN EXCEL AS A SUBPLOT
